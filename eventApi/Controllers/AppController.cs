@@ -125,6 +125,44 @@ namespace eventApi.Controllers
             return newEvent;
         }
 
+        [Authorize]
+        [HttpPut("events/{id:int}")]
+        public async Task<ActionResult<Event>> UpdateEvent([FromRoute] int id, [FromForm] EventCreateDto eventCreateDto) {
+
+            int UserId = await GetUserIdAsync();
+
+            var foundEvent = await db.Events.FindAsync(id);
+            if(foundEvent == null) return BadRequest(new {error = "Event not exist!"});
+            
+            var user = await db.Users.FindAsync(UserId);
+            if(user == null) return BadRequest(new {error = "User not exist!"});
+
+            var morderator = await db.Users.FindAsync(eventCreateDto.ModeratorId);
+            if(morderator == null) return BadRequest(new {error = "Moderator not exist!"});
+
+            foundEvent.UserId = UserId;
+            foundEvent.Name = eventCreateDto.Name;
+            foundEvent.Tagline = eventCreateDto.Tagline;
+            foundEvent.Schedule = eventCreateDto.Schedule;
+            foundEvent.Description = eventCreateDto.Description;
+            foundEvent.ModeratorId = eventCreateDto.ModeratorId;
+            foundEvent.Category = eventCreateDto.Category;
+            foundEvent.SubCategory = eventCreateDto.SubCategory;
+            foundEvent.RigorRank = eventCreateDto.RigorRank;
+
+            if (eventCreateDto.ImageFile != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await eventCreateDto.ImageFile.CopyToAsync(memoryStream);
+                    foundEvent.Image = memoryStream.ToArray();
+                }
+            }
+
+            await db.SaveChangesAsync();
+
+            return foundEvent;
+        }
 
         #region HelperFunctions
         private async Task<int> GetUserIdAsync()
