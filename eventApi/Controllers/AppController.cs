@@ -125,6 +125,8 @@ namespace eventApi.Controllers
             return newEvent;
         }
 
+
+        #region HelperFunctions
         private async Task<int> GetUserIdAsync()
         {
             string username = this.GetCurrentUsername();
@@ -147,5 +149,6 @@ namespace eventApi.Controllers
 
             return null;
         }
+        #endregion HelperFunctions
     }
 }
