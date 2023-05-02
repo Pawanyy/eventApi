@@ -69,22 +69,6 @@ namespace eventApi.Controllers
         }
 
         [Authorize]
-        [HttpDelete("events/{id:int}")]
-        public async Task<IActionResult> DeleteEvent(int id)
-        {
-            var MyEvent = await db.Events.FindAsync(id);
-            if (MyEvent == null)
-            {
-                return NotFound();
-            }
-
-            db.Events.Remove(MyEvent);
-            await db.SaveChangesAsync();
-
-            return Ok(new {message = "Event Deleted Successfully"});
-        }
-
-        [Authorize]
         [HttpPost("events")]
         public async Task<ActionResult<Event>> CreateEvent([FromForm] EventCreateDto eventCreateDto) {
 
@@ -162,6 +146,20 @@ namespace eventApi.Controllers
             await db.SaveChangesAsync();
 
             return foundEvent;
+        }
+
+        [Authorize]
+        [HttpDelete("events/{id:int}")]
+        public async Task<IActionResult> DeleteEvent(int id)
+        {
+            var foundEvent = await db.Events.FindAsync(id);
+            if (foundEvent == null) return NotFound();
+            
+
+            db.Events.Remove(foundEvent);
+            await db.SaveChangesAsync();
+
+            return Ok(new {message = "Event Deleted Successfully"});
         }
 
         #region HelperFunctions
