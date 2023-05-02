@@ -1,0 +1,378 @@
+{
+	"info": {
+		"_postman_id": "fe5e3545-19af-45d8-bc64-3da6016b3eb5",
+		"name": "EventAPI",
+		"description": "This API allows users to authenticate and receive a JSON Web Token (JWT) which can be used to make authorized requests to other protected API endpoints to create, update, delete, retrive on Event Data.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25602761"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"username\": \"jay\",\r\n\t\"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}account/login",
+							"host": [
+								"{{url}}account"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "Logins an existing user and returns JWT token."
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"username\": \"bob\",\r\n\t\"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}account/register",
+							"host": [
+								"{{url}}account"
+							],
+							"path": [
+								"register"
+							]
+						},
+						"description": "Registers an new User and then Logins and returns JWT token."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints to authenticate user and return JWT token."
+		},
+		{
+			"name": "App",
+			"item": [
+				{
+					"name": "Event",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}app/events/1",
+							"host": [
+								"{{url}}app"
+							],
+							"path": [
+								"events",
+								"1"
+							]
+						},
+						"description": "Returns an existing event."
+					},
+					"response": []
+				},
+				{
+					"name": "Events List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}app/events?type=oldest&limit=100&page=1",
+							"host": [
+								"{{url}}app"
+							],
+							"path": [
+								"events"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "oldest"
+								},
+								{
+									"key": "limit",
+									"value": "100"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Gets a list of events.\n\n#### Query Parameters\n\n| **Name** | **Type** | **Required** | **Description** |\n| --- | --- | --- | --- |\n| type | string | No | Type of events to be fetched. E.g. latest, oldest. |\n| limit | int | No | Number of events to be fetched. |\n| page | int | No | Page number for the events. |"
+					},
+					"response": []
+				},
+				{
+					"name": "Event Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Projects/dotnet/DatingApp/StudentAssets/StudentAssets/user.png"
+								},
+								{
+									"key": "Name",
+									"value": "Marrige",
+									"type": "default"
+								},
+								{
+									"key": "Tagline",
+									"value": "na",
+									"type": "default"
+								},
+								{
+									"key": "Schedule",
+									"value": "2023-05-02T18:08:09.446Z",
+									"type": "default"
+								},
+								{
+									"key": "Description",
+									"value": "na",
+									"type": "default"
+								},
+								{
+									"key": "ModeratorId",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "Category",
+									"value": "Marrige",
+									"type": "default"
+								},
+								{
+									"key": "SubCategory",
+									"value": "Asia",
+									"type": "default"
+								},
+								{
+									"key": "RigorRank",
+									"value": "1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}app/events",
+							"host": [
+								"{{url}}app"
+							],
+							"path": [
+								"events"
+							]
+						},
+						"description": "Creates a new event."
+					},
+					"response": []
+				},
+				{
+					"name": "Event Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Projects/dotnet/DatingApp/StudentAssets/StudentAssets/user.png"
+								},
+								{
+									"key": "Name",
+									"value": "Marrigeaaa",
+									"type": "default"
+								},
+								{
+									"key": "Tagline",
+									"value": "na",
+									"type": "default"
+								},
+								{
+									"key": "Schedule",
+									"value": "2023-05-02T18:08:09.446Z",
+									"type": "default"
+								},
+								{
+									"key": "Description",
+									"value": "na",
+									"type": "default"
+								},
+								{
+									"key": "ModeratorId",
+									"value": "1",
+									"type": "default"
+								},
+								{
+									"key": "Category",
+									"value": "Marrige",
+									"type": "default"
+								},
+								{
+									"key": "SubCategory",
+									"value": "Asia",
+									"type": "default"
+								},
+								{
+									"key": "RigorRank",
+									"value": "1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}app/events/1",
+							"host": [
+								"{{url}}app"
+							],
+							"path": [
+								"events",
+								"1"
+							]
+						},
+						"description": "Updates an Existing Event"
+					},
+					"response": []
+				},
+				{
+					"name": "Event Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}app/events/3",
+							"host": [
+								"{{url}}app"
+							],
+							"path": [
+								"events",
+								"3"
+							]
+						},
+						"description": "Deleted an existing event."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints to create and manage events for authenticated user."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:5098/api/v3/",
+			"type": "default"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJqYXkiLCJuYmYiOjE2ODMwNDA2MDksImV4cCI6MTY4MzY0NTQwOSwiaWF0IjoxNjgzMDQwNjA5fQ._sCJsXG0x4MZjEJEAht34VHkZxc3Z7sWCYovjzaPYBp0JCZWwuPQh73ZrW10bTJdcQxOjipbIG0L6utTjKb0XA",
+			"type": "default"
+		}
+	]
+}
